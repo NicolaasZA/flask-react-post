@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Add React in One Minute</title>
+  <style>
+    #previewContainer {
+      max-width: 800px;
+      width: 100%;
+      margin: 12px auto;
+    }
+
+    #previewFrame {
+      width: 100%;
+      min-height: 600px
+    }
+
+    #buttonRow {
+      max-width: 300px;
+      width: 100%;
+      margin: 8px auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="buttonRow">
+    <div id="post_query_button_container"></div>
+    <div id="post_form_button_container"></div>
+    <div id="post_json_button_container"></div>
+  </div>
+
+  <div id="previewContainer">
+    <iframe id="previewFrame"></iframe>
+  </div>
+
+  <!-- Load React. -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- Load our React component. -->
+  <script src="post_query_button.js"></script>
+  <script src="post_form_button.js"></script>
+  <script src="post_json_button.js"></script>
+</body>
+
+</html>
