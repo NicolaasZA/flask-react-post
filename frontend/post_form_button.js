@@ -24,7 +24,6 @@ class PostFormButton extends React.Component {
     // Hierdie is het jy form data na die backend stuur. Check serve.py om te sien hoe die form data gelees word.
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:5000/", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
 
     var formData = new FormData();
     formData.append("fieldA", "valueA");
