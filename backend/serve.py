@@ -3,6 +3,44 @@ from flask import Flask, request, Response
 app = Flask(__name__)
 
 
+@app.route("/signup", methods=['POST', 'GET', 'OPTIONS'])
+def post_signup():
+    styling = 'body { background: silver; } table { width: 400px; margin: 20px auto; background: white; border-radius: 4px; } .tac { text-align: center; color: #777; } .tar { text-align: right; } .tal { text-align: left; } td { padding: 6px; } table tr:nth-child(even) { background: whitesmoke; }'
+
+    # ! As jy die login details met form stuur na backend
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # ! As jy die login details as JSON stuur na backend
+    json_object = request.get_json(silent=True, cache=False)
+    if json_object is not None:
+        username = json_object['username']
+        password = json_object['password']
+
+    response = Response(f"""
+    <style>{styling}</style>
+    <table>
+        <tr>
+            <th colspan="2">Login Data</th>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td>{username}</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>{password}</td>
+        </tr>
+    </table>""")
+
+    # Add CORS headers
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
+
 @app.route("/", methods=['POST', 'GET', 'OPTIONS'])
 def hello_world():
 
@@ -36,7 +74,7 @@ def hello_world():
     jason = request.get_json(silent=True, cache=False)
 
     # jason is None as die request nie 'n JSON request is nie.
-    if jason is not None:  
+    if jason is not None:
         # Gaan hier in as request JSON is.
         for param in jason:
             value = jason[param]
