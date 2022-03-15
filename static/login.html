@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+
+  <link rel="stylesheet" href="src/global.css">
+
+  <script type="text/javascript" src="dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div class="pageContainer">
+    <div class="formContainer">
+      <div class="formInput">
+        <input name="email" type="email" placeholder="EMAIL" id="loginEmail">
+      </div>
+
+      <div class="formInput">
+        <input name="password" type="password" placeholder="PASSWORD" id="loginPass">
+      </div>
+
+      <div class="formButtons">
+        <input type="submit" value="Login" id="loginButton">
+      </div>
+
+      <div class="formMessage" id="loginMessage">
+        &nbsp;
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+
+    function setLoginMessage(text) {
+      if (text) {
+        document.getElementById('loginMessage').innerText = text;
+      } else {
+        document.getElementById('loginMessage').innerHTML = '&nbsp;';
+      }
+    }
+
+    function onLoginSubmit(event) {
+      const uname = document.getElementById('loginEmail').value;
+      const upass = document.getElementById('loginPass').value;
+
+      axios.post('http://127.0.0.1:5000/signup', {
+        username: uname,
+        password: upass
+      })
+        .then(function (response) {
+          // handle success
+          console.log(response.data);
+
+          if (!response.data.success) {
+            document.getElementById('loginPass').value = '';
+          }
+          
+          setLoginMessage(response.data.message);
+        })
+        .catch(function (error) {
+          // handle error
+          console.error(error);
+          setLoginMessage(error);
+        });
+    }
+
+    document.getElementById('loginButton').addEventListener('click', (evt) => onLoginSubmit(evt));
+  </script>
+</body>
+
+</html>
