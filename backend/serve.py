@@ -1,37 +1,52 @@
-from flask import Flask, request, Response
+from flask import Flask, request, json
 
 app = Flask(__name__)
 
 
-@app.route("/signup", methods=['POST', 'GET', 'OPTIONS'])
+@app.route("/signup", methods=['POST', 'OPTIONS'])
 def post_signup():
-    styling = 'body { background: silver; } table { width: 400px; margin: 20px auto; background: white; border-radius: 4px; } .tac { text-align: center; color: #777; } .tar { text-align: right; } .tal { text-align: left; } td { padding: 6px; } table tr:nth-child(even) { background: whitesmoke; }'
+    username: str = None
+    password: str = None
+    success: bool = False
+    message: str = ""
 
-    # ! As jy die login details met form stuur na backend
-    username = request.form.get('username')
-    password = request.form.get('password')
-
-    # ! As jy die login details as JSON stuur na backend
+    # Kry JSON data uit die request
     json_object = request.get_json(silent=True, cache=False)
     if json_object is not None:
         username = json_object['username']
         password = json_object['password']
 
-    response = Response(f"""
-    <style>{styling}</style>
-    <table>
-        <tr>
-            <th colspan="2">Login Data</th>
-        </tr>
-        <tr>
-            <td>Username</td>
-            <td>{username}</td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td>{password}</td>
-        </tr>
-    </table>""")
+    # Maak seker 'n username en password is voorsien.
+    if username not in ['', None] and password not in ['', None]:
+
+        # Replace hierdie met SQL call om te check of die user klaar geregistreer is.
+        isRegistered = username in ['Test', 'Test2']
+
+        if not isRegistered:
+            # Register user hierso via SQL.
+
+            success = True
+            message = ""
+        else:
+            # User bestaan klaar en moet login, nie register nie.
+            success = False
+            message = "You already have an account. Please login."
+    else:
+        # Daar is data in die request van die frontend af kort.
+        success = False
+        message = "Missing required fields"
+
+    # data om terug te stuur na frontend
+    response_data = {
+        'success': success,
+        'message': message
+    }
+
+    response = app.response_class(
+        response=json.dumps(response_data),
+        status=200,
+        mimetype='application/json'
+    )
 
     # Add CORS headers
     response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
