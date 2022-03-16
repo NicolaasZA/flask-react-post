@@ -31,105 +31,98 @@ def respond_json_obj(obj: JSONResponse):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
+
 @app.route('/', methods=['GET'])
 def index():
     return redirect('static/login.html')
 
 
 @app.route("/signup", methods=['POST', 'OPTIONS'])
-def signup():
-    username: str = None
-    password: str = None
-    typeString: str = None
+def register():
+    username: str
+    password: str
+    typeString: str
 
-    responseData = {}
-    responseData['success'] = False
-    responseData['message'] = ''
-    responseData['user'] = None
+    _res = JSONResponse()
 
-    # Kry JSON data uit die request
+    # Read JSON post data
     json_object = request.get_json(silent=True, cache=False)
-    if json_object is not None:
+    if is_not_null(json_object):
         username = json_object['username']
         password = json_object['password']
         typeString = json_object['type']
 
-    # Maak seker 'n username en password is voorsien.
-    if username not in ['', None] and password not in ['', None]:
+    if is_not_null(username) and is_not_null(password):
         # Default to programmer account creation.
-        if typeString in ['', None] or typeString not in ['0', '1']:
+        if typeString not in ['0', '1']:
             typeString = '0'
 
         # Check of user klaar geregistreer is.
-        user: User = db.get_user(username, password)
+        _existingUser: User = db.get_user(username, password)
 
-        if user == None:
-            # Register user hierso via SQL.
-            newUser: User = db.register_user(username, password, int(typeString))
+        if _existingUser == None:
+            _newUser: User = db.register_user(
+                username, password, int(typeString))
 
-            if newUser != None:
-                responseData['user'] = newUser.to_json()
-                responseData['success'] = True
-                responseData['message'] = ""
+            if _newUser != None:
+                _res.set_data('user', _newUser.to_json())
+                _res.success = True
             else:
-                responseData['user'] = None
-                responseData['success'] = False
-                responseData['message'] = "Something went wrong during registration."
+                _res.success = False
+                _res.message = "Something went wrong during registration."
         else:
             # User bestaan klaar en moet login, nie register nie.
-            responseData['success'] = False
-            responseData['message'] = "You already have an account. Please login."
+            _res.success = False
+            _res.message = "You already have an account. Please login."
     else:
         # Daar is data in die request van die frontend af kort.
-        responseData['success'] = False
-        responseData['message'] = "Missing required fields"
+        _res.success = False
+        _res.message = "Missing required fields"
 
-    return respond_json(responseData)
+    return respond_json_obj(_res)
 
 
 @app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
-    responseData = {}
-    responseData['success'] = False
-    responseData['message'] = ''
-    responseData['user'] = None
+    username: str
+    password: str
 
-    username: str = None
-    password: str = None
+    _res = JSONResponse()
 
     # Kry JSON data uit die request
     json_object = request.get_json(silent=True, cache=False)
-    if json_object is not None:
+    if is_not_null(json_object):
         username = json_object['username']
         password = json_object['password']
 
     # Maak seker 'n username en password is voorsien.
-    if username not in ['', None] and password not in ['', None]:
+    if is_not_null(username) and is_not_null(password):
 
         # Replace hierdie met SQL call om te check of die user klaar geregistreer is.
-        user: User = db.get_user(username, password)
+        _user: User = db.get_user(username, password)
 
-        if user != None:
+        if _user != None:
             # User bestaan, so gee token en email deur vir frontend om te stoor.
-            user.token = db.register_token(user.id)
-            responseData['user'] = user.to_json()
-            responseData['success'] = True
-            responseData['message'] = ""
+            _user.token = db.register_token(_user.id)
+
+            _res.set_data('user', _user.to_json())
+            _res.success = True
         else:
-            responseData['success'] = False
-            responseData['message'] = "Invalid login details. If you do not have an account, kindly register."
+            _res.success = False
+            _res.message = "Invalid login details. If you do not have an account, kindly register."
     else:
         # Daar is data in die request van die frontend af kort.
-        responseData['success'] = False
-        responseData['message'] = "Missing required fields"
+        _res.success = False
+        _res.message = "Missing required fields"
 
-    return respond_json(responseData)
+    return respond_json_obj(_res)
+
 
 @app.route('/projects', methods=['POST', 'OPTIONS'])
 def projects():
     _res = JSONResponse()
-   
-    tokenHeader = request.headers['X-TOKEN'] 
+
+    tokenHeader = request.headers['X-TOKEN']
 
     if db.verify_token_header(tokenHeader):
         _userToken = tokenHeader.split('|')[1]
@@ -145,7 +138,7 @@ def projects():
     else:
         _res.success = False
         _res.message = 'Not Authorized. Please login.'
-        
+
     return respond_json_obj(_res)
 
 
