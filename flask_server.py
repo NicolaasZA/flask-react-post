@@ -130,7 +130,6 @@ def projects():
     _res = JSONResponse()
    
     tokenHeader = request.headers['X-TOKEN'] 
-    _res.set_data('token', tokenHeader)
 
     if db.verify_token_header(tokenHeader):
         _userToken = tokenHeader.split('|')[1]
@@ -138,8 +137,8 @@ def projects():
 
         if is_not_null(_user):
             _res.set_data('user', _user.to_json())
-
             _res.set_data('projects', db.get_available_projects(_user.id))
+            _res.success = True
         else:
             _res.success = False
             _res.message = 'Not Authorized. Please login.'

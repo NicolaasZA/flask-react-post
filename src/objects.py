@@ -6,7 +6,7 @@ def generate_token():
 
 
 def is_not_null(val):
-    return val not in ['', None]
+    return val not in ['', None, 'null']
 
 
 def debug(text: str):

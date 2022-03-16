@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="src/global.css">
 
+    <script type="text/javascript" src="src/global.js"></script>
     <script type="text/javascript" src="src/dashboard.js"></script>
 
     <script type="text/javascript" src="dist/axios.min.js"></script>
@@ -20,21 +21,32 @@
 <body>
     <div class="pageContainer topped">
 
+        <div class="pageHeader">
+            <span>Title</span>
+            <div class="phUser">
+                <span id="phUserName">USER</span> <img src="images/lock-regular.svg" onclick="logout()">
+            </div>
+        </div>
+
         <div class="tableContainer">
             <div class="tableBanner">
                 <span>Projects</span>
                 <div class="tableButton" id="refreshProjectsButton"><img src="images/arrows-rotate-solid.svg"></div>
             </div>
 
-            <table>
-                <tr>
-                    <th class="tal">Name</th>
-                    <th class="tal">Company</th>
-                    <th class="tar">Created</th>
-                </tr>
+            <table id="projectsTable">
+                <thead>
+                    <tr>
+                        <th class="tal">Name</th>
+                        <th class="tal">Company</th>
+                        <th class="tar">Created</th>
+                    </tr>
+                </thead>
                 <tbody id="projectsList">
                 </tbody>
             </table>
+
+            <div id="projectsMessage" class="tableMessage">Message here</div>
         </div>
     </div>
 

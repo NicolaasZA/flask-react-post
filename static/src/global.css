@@ -20,6 +20,29 @@ body {
   padding-top: 40px;
 }
 
+.pageHeader {
+  width: 100%;
+  max-width: 600px;
+  margin: 12px 0px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.pageHeader>span {
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.phUser {
+  display: flex;
+  align-items: center;
+  color: #7c7c7c;
+}
+.phUser img {
+  width: 26px;
+  height: 26px;
+  margin-left: 5px;
+}
+
 /* FORMS */
 .formContainer {
   /* width: 100%; */
@@ -72,7 +95,7 @@ body {
 }
 .tableContainer table {
   width: 100%;
-  padding: 20px;
+  padding: 10px 20px 20px 20px;
 }
 .tableBanner {
   text-align: center;
@@ -93,6 +116,16 @@ body {
 .tableButton {
   min-width: 30px;
   font-size: 13px;
+}
+
+.tableMessage {
+  color: darkred;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  max-width: 300px;
+  margin: 0px auto;
 }
 
 .tableContainer table th,
