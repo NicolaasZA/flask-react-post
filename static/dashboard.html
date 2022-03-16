@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="src/global.css">
+
+    <script type="text/javascript" src="src/dashboard.js"></script>
+
+    <script type="text/javascript" src="dist/axios.min.js"></script>
+    <script type="text/javascript" src="dist/jquery-3.6.0.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="pageContainer topped">
+
+        <div class="tableContainer">
+            <div class="tableBanner">
+                <span>Projects</span>
+                <div class="tableButton" id="refreshProjectsButton"><img src="images/arrows-rotate-solid.svg"></div>
+            </div>
+
+            <table>
+                <tr>
+                    <th class="tal">Name</th>
+                    <th class="tal">Company</th>
+                    <th class="tar">Created</th>
+                </tr>
+                <tbody id="projectsList">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            refreshDashboard();
+
+            document.getElementById('refreshProjectsButton').onclick = (ev) => refreshProjects();
+        });
+    </script>
+</body>
+
+</html>

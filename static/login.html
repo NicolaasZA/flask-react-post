@@ -8,11 +8,20 @@
   <link rel="stylesheet" href="src/global.css">
 
   <script type="text/javascript" src="dist/axios.min.js"></script>
+
+  <script type="text/javascript" src="src/login.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div class="pageContainer">
+    <!-- Login Form -->
     <div class="formContainer">
+      <div class="formLabel">Login</div>
+
       <div class="formInput">
         <input name="email" type="email" placeholder="EMAIL" id="loginEmail">
       </div>
@@ -29,44 +38,40 @@
         &nbsp;
       </div>
     </div>
+
+    <div id="orText">OR</div>
+
+    <!-- Signup Form -->
+    <div class="formContainer">
+      <div class="formLabel">Sign Up</div>
+
+      <div class="formInput">
+        <input name="email" type="email" placeholder="EMAIL" id="signupEmail">
+      </div>
+
+      <div class="formInput">
+        <input name="password" type="password" placeholder="PASSWORD" id="signupPass">
+      </div>
+
+      <div class="formInputGroup">
+        <input type="radio" id="typeString1" name="typeString" value="0" checked>
+        <label for="typeString1">Programmer</label>
+        <input type="radio" id="typeString2" name="typeString" value="1">
+        <label for="typeString2">Company</label>
+      </div>
+
+      <div class="formButtons">
+        <input type="submit" value="Submit" id="signupButton">
+      </div>
+
+      <div class="formMessage" id="signupMessage">
+        &nbsp;
+      </div>
+    </div>
   </div>
 
-
-  <script type="text/javascript">
-
-    function setLoginMessage(text) {
-      if (text) {
-        document.getElementById('loginMessage').innerText = text;
-      } else {
-        document.getElementById('loginMessage').innerHTML = '&nbsp;';
-      }
-    }
-
-    function onLoginSubmit(event) {
-      const uname = document.getElementById('loginEmail').value;
-      const upass = document.getElementById('loginPass').value;
-
-      axios.post('http://127.0.0.1:5000/signup', {
-        username: uname,
-        password: upass
-      })
-        .then(function (response) {
-          // handle success
-          console.log(response.data);
-
-          if (!response.data.success) {
-            document.getElementById('loginPass').value = '';
-          }
-          
-          setLoginMessage(response.data.message);
-        })
-        .catch(function (error) {
-          // handle error
-          console.error(error);
-          setLoginMessage(error);
-        });
-    }
-
+  <script>
+    document.getElementById('signupButton').addEventListener('click', (evt) => onSignupSubmit(evt));
     document.getElementById('loginButton').addEventListener('click', (evt) => onLoginSubmit(evt));
   </script>
 </body>
