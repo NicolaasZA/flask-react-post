@@ -27,6 +27,8 @@ function refreshProjects() {
                         table.innerHTML += row;
                     }
                 }
+
+                showUserFields(response.data.data.user);
             } else {
                 setProjectsErrorText(response.data.message);
             }

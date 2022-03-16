@@ -37,7 +37,7 @@ function onSignupSubmit(event) {
             if (!response.data.success) {
                 document.getElementById('loginPass').value = '';
             } else {
-                sessionStorage.setItem('userToken', response.data.user.id + '|' + response.data.user.token);
+                sessionStorage.setItem('userToken', response.data.data.user.id + '|' + response.data.data.user.token);
                 window.location.href = 'dashboard.html';
             }
 
@@ -68,7 +68,7 @@ function onLoginSubmit(event) {
             if (!response.data.success) {
                 document.getElementById('loginPass').value = '';
             } else {
-                sessionStorage.setItem('userToken', response.data.user.id + '|' + response.data.user.token);
+                sessionStorage.setItem('userToken', response.data.data.user.id + '|' + response.data.data.user.token);
                 window.location.href = 'dashboard.html';
             }
 
